@@ -29,3 +29,7 @@ for i in range(6):
     plt.plot(t, exact, label = "exact")
     plt.legend()
 plt.show()
+plt.close()
+plt.plot(t,X) # plot the Brownian motion
+plt.title("Brownian motion KL expansion: order N = {]".format(N))
+plt.show()
