@@ -70,7 +70,8 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     n,m: n and m are the number of gridpoints along x and y direction respectively. 
     lims: lims=[a,b,c,d] simulation domain is [a,b] x [c,d]
     Cov: the covariance function should. Should be given as c(x,y), x and y bivariate vectors.
-    quad: The quadrature method used. EOLE will be the only implemented for now
+    quad: The quadrature method used. "EOLE" for the EOLE method quadrature
+    and "gaussleg" for the gauss-legendre quadrature
     -----
     output
     -----
