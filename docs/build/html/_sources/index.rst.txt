@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-GaussRF's documentation!
+GaussRF documentation
 ===================================
 
 .. toctree::
@@ -13,6 +13,10 @@ GaussRF's documentation!
    Simulation
    License
 
+
+
+For an introduction to Gaussian Random Fields, please see
+:download:`here <Random_fields_introduction.pdf>`
 
 
 Indices and tables
