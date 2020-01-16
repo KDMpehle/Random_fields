@@ -2,25 +2,48 @@ import numpy as np
 import scipy.sparse.linalg as spla
 import numbers
 
+# def test(a):
+# """[summary]
+
+# :param a: [description]
+# :type a: [type]
+# """       
+
+
+
 def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
-    """
-    Karhunen-Loeve in 1-Dimension using Nystrom method.
-    -----
-    input
-    -----
-    N: Order of the Karhunen-Loeve expansion.
-    M: number of quadrature intervals . N <=M
-    a,b: domain of simulation, X_t for t in [a,b]
-    Cov: The covariance function, a bivariate function
-    quad: Quadrature used."EOLE" for the EOLE method. I tried Gauss-Legendre
-    before and there was an issue with inaccurate simulation at the end
-    points of the simulation domain
+    """Karhunen-Loeve in 1-Dimension using Nystrom method.
+
+
+    :param N: Order of the Karhunen-Loeve expansion.
+    :type N: int
+
+    :param M: number of quadrature intervals . :math:`N \leq M`
+    :type M: int
+
+    :param a,b: domain of simulation, :math:`X_t` for :math:`t` in :math:`[a,b]`
+    :type a,b: float
+
+    :param Cov: The covariance function, a bivariate function
+    :type Cov: func
+
+    :param quad: Quadrature used."EOLE" for the EOLE method. I tried Gauss-Legendre before and there was an issue with inaccurate simulation at the end points of the simulation domain
+    :type quad: str
+
+
     -----
     output
     -----
-    X: (M,) 1-D array of the random field
-    phi: (M,N) 2-D arrray whose columns are the eigenfunctions
-    L: (M,) 1-D array of the eigenvalues.
+
+    :return: :math:`X` 1-D array of the random field of shape (M,)
+    :rtype: numpy.ndarray
+
+    :return: :math:`\phi` 2-D arrray whose columns are the eigenfunctions. Shape (M,N) 
+    :rtype: numpy.ndarray
+
+    :return: :math:`L` 1-D array of the eigenvalues of shape (M,)
+    :rtype: numpy.ndarray
+
     """
     if N > M:
         raise ValueError(' Order of expansion N must be less than number of quadrature points')
@@ -45,12 +68,13 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
         raise ValueError("Only 'EOLE' quadrature is supported so far")
 
 def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
-    """
-    Solver using the Nystrom method for finding the Karhunen-Loeve expansion
+    """Solver using the Nystrom method for finding the Karhunen-Loeve expansion
     -----
     input
     -----
-    N: The order of the Karhunen-Loeve expansion.
+    :param N: Order of the Karhunen-Loeve expansion.
+    :type N: int
+
     n,m: n and m are the number of gridpoints along x and y direction respectively. 
     lims: lims=[a,b,c,d] simulation domain is [a,b] x [c,d]
     Cov: the covariance function should. Should be given as c(x,y), x and y bivariate vectors.
