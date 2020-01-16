@@ -12,9 +12,8 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
     M: number of quadrature intervals . N <=M
     a,b: domain of simulation, X_t for t in [a,b]
     Cov: The covariance function, a bivariate function
-    quad: Quadrature used."EOLE" for the EOLE method. I tried Gauss-Legendre
-    before and there was an issue with inaccurate simulation at the end
-    points of the simulation domain
+    quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use
+    gauss-legendre quadrature.
     -----
     output
     -----
@@ -41,8 +40,25 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
         for i in range(N):
             X += Z[i]*np.sqrt(L[i])*phi[:,i]
         return X, phi, L
+    elif quad == "gaussleg":
+        xi ,w = np.polynomial.legendre.leggauss(M) # the canonical points and weights
+        x = 0.5*(b-a)*xi + 0.5*(b+a) # translate GL points to [a,b].
+        W = 0.5*(b-a)*np.diag(w) # GL weights matrix
+        x1,x2 = np.meshgrid(x,x)
+        C = Cov(x1,x2) # covariance matrix
+        B = np.dot(np.dot(np.sqrt(W),C),np.sqrt(W)) # symmetric B matrix
+        L,y= spla.eigsh(B, k =N) # eigenvalues and vectors of B
+        arg_sort = np.argsort(-L) #indices for sorting
+        L,y = L[arg_sort].real, y[:,arg_sort].real # re-order the eigens
+        X = np.zeros(M) #preallocate realisation vector.
+        W_inv = np.sqrt(2./(b-a))*np.diag(1/np.sqrt(w)) # weights inv sqrt
+        phi = np.dot(W_inv,y) # original eigenvector problem.
+        Z = np.random.randn(N):
+            X += Z[i]*np.sqrt(L[i])*phi[:,i] # The KL expansion.
+        return X, phi, L, x # return the GL grid as well
+        
     else:
-        raise ValueError("Only 'EOLE' quadrature is supported so far")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature is supported so far")
 
 def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     """
@@ -73,7 +89,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
         W = (A/(n*m))*np.eye(n*m)# weights matrix.
         #create a list of coordinates
         x_pairs = np.hstack([np.repeat(x,m).reshape(n*m,1),np.tile(y,n).reshape(n*m,1)])#coordinate setup.
-        x_mesh = np.hstack([np.repeat(xx,n*m,axis = 0), np.tile(xx,[n*m,1])]) # coordinate pairs grid for covariance.
+        x_mesh = np.hstack([np.repeat(xx,n*m,axis = 0), np.tile(xx,[n*m,1])]) # all possible pairs of coordinates for covariance matrix.
         C = Cov(x_mesh[:,0:2],x_mesh[:,2:]).reshape(n*m,n*m) # Covariance matrix, looks to give correct eigens.
         B = np.dot(np.dot(np.sqrt(W),C),np.sqrt(W)) # symmetric pos. definite B
         L, y = spla.eigsh(B, k = N) # first N eigens of B
@@ -86,6 +102,35 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
         for i in range(N): # The KL expansion
             X += np.sqrt(L[i])*Z[i]*phi[:,i].reshape(n,m)
         return X, phi, L
+    elif quad == "gaussleg":
+        a,b,c,d = lims # extract domain limits
+        A = (b-a)*(d-c) # volume of domain
+        if n == m:
+            xi,w1 = np.polynomial.legendre.leggauss(n) # grid and weights.
+            w2 = w1 # x and y weights
+            x1 = 0.5*(b-a)*xi + (b+a)*0.5 #x-grid
+            x2 = 0.5*(d-c)*xi + (c+d)*0.5 # y-grid
+        else:
+            xi,w1 = np.polynomial.legendre.leggauss(n)# x-grid and weights
+            zeta, w2 = np.polynomial.legendre.leggauss(m)# y-grid and weights
+            x1 = 0.5*(b-a)*xi + (b+a)*0.5 # translate to [a,b]
+            x2 = 0.5*(d-c)*zeta + (d+c)*0.5 # translate to [c,d]
+        W  = (A/4)*np.kron(np.diag(w1), np.diag(w2))# weights matrix.
+        #create a list of coordinates
+        x_pairs = np.hstack([np.repeat(x1,m).reshape(n*m,1),np.tile(x2,n).reshape(n*m,1)])
+        x_mesh = np.hstack([np.repeat(xx,n*m,axis =0), np.tile(xx,[n*m,1])]) # All pairs of coordinates("flattened")
+        C = Cov(x_mesh[:,0:2],x_mesh[:,2:]).reshape(n*m,n*m)#Covariance matrix
+        B = np.dot(np.dot(np.sqrt(W),C),np.sqrt(W)) # symmetric pos def B
+        L,y = spla.eigsh(B,k=N) # The eigens of B.
+        arg_sort = np.argsort(-L)
+        L,y = L[arg_sort].real, y[:,arg_sort].real # re-order the eigens
+        W_inv = np.sqrt(4./A)*np.sqrt(np.kron(np.diag(1/w1),np.diag(1/w2))) # sqrt inv of W
+        phi = np.dot(W_inv,y) # eigenvectors of original problem
+        X = np.zeros((n,m)) # array to hold realisation
+        Z = np.random.randn(N) #iid standard normals
+        for i in range(N):
+            X+= np.sqrt(L[i])*Z[i]*phi[:,i].reshape(n,m) # the KL expansion
+        return X, phi, L, x1, x2 # return gauss legendre grid.
     else:
         raise ValueError("Only 'EOLE' quadrature is supported so far.")
 def circ_embed1D(g,a,b,Cov):
@@ -166,6 +211,7 @@ def circ_embed2D(n,m,lims,Cov):
          + 1j*np.random.randn(2*m-1,2*n-1)) # N(0,1) grid
     W = np.fft.fft2(np.sqrt(L)*Z) # simulates N(0,C)
     return W[:m,:n].real, W[:m,:n].imag 
+#
 # Execution guard
 #
 if __name__ == "__main__":
