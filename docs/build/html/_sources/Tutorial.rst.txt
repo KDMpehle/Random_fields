@@ -1,0 +1,102 @@
+======================================================
+A Python Library for simulating Gaussian random fields
+======================================================
+
+:Author: Khaya Mpehle, Steven Maharaj
+
+.. raw:: latex
+   \usepackage{amsmath,bm}
+   \maketitle
+
+Here we will introduce a python library, ``GaussRF``, concerned with
+simulating Gaussian Random fields in one-dimension and two-dimensional
+rectangular domains. The library will implement two sampling methods,
+one approximate and one exact. The Karhunen-Loève expansion, using the
+Nyström method to solve further numerical problems, is the approximate
+method, while the circulant embedding method is the exact sampling
+procedure. The document is structured as follows: a brief discussion on
+the theory random fields will start. The main part of the document will
+then introduce the key functions in ``GaussRF`` and give examples of
+their use. The document will finish by listing expansions to this
+library that should be prioritized.
+
+Introductory theory
+===================
+
+Let us denote by :math:`T` some space, for example a two-dimensional
+rectangular domain :math:`[a,b] \times [c,d]`, the surface of a sphere
+or the time interval :math:`[t_{\text{min}},t_{\text{max}}]`. A random
+field takes each member :math:`t \in T` of this space and assigns a
+random variable to it. A random field :math:`F_t` therefore assigns a
+random variable to each point :math:`t` in the index space :math:`T`.
+If :math:`t` is a one-dimensional index, then a random field reduces
+to a stochastic process. The variations of topography would be
+modelled by a random field :math:`H_t` on a two-dimensional domain
+:math:`t \in \mathds{R}^2`; Random fluctuations of the wind field
+across the Earth’s surface would be modelled be a random field with
+its index set a subset of the surface of a sphere. In general then a
+random field is an extension of a stochastic process, allowing the
+index space :math:`T` to be a manifold. A Gaussian random field
+:math:`X_t` is one that has a Gaussian distribution for each
+:math:`t \in T`.
+
+It is our goal to produce a Python library for the numerical
+simulation of Gaussian random fields in one-dimensions and
+two-dimensional rectangular domains using two well established
+numerical techniques. The first is via truncation of the
+Karhunen-Loève(KL) expansion of the RF.
+
+The Karhunen Loève approximation
+================================
+
+Let :math:`X_t` be a zero mean Gaussian field, where :math:`t \in T`,
+with covariance function
+
+.. math:: R(t,s) = E\left[X_tX_s\right] .
+
+The Karhunen-Loève expansion theorem states that :math:`X_t` can be
+expanded as
+
+.. math:: X_t = \sum_{k=1}^\infty \sqrt{\lambda_k}Z_k \phi_k(t).
+
+In this expansion :math:`Z_k` are iid standard normal variables while
+:math:`\phi_k` and :math:`\lambda_k` are respectively the
+eigen-functions and -values of the RF’s covariance function. Therefore
+:math:`\phi_k` and :math:`\lambda_k` satisfy the eigenvalue problem
+
+.. math:: \int_{t\in T} R(t,s)\phi_k(s)ds = \lambda_k\phi_k(t)
+
+The Karhunen-Loève expansion can roughly be thought of as
+“separating" the deterministic and random components of the Gaussian
+RF.
+| A means of approximating the RF :math:`X_t` is to truncate the KL
+expansion after :math:`N` terms. This is termed the Karhunen-Loève
+approximation of order :math:`N`. With a finite number of terms in the
+expansion, the only remaining task is to find the eigenvalues and
+-functions of the convariance function. There are several ways to do
+this, here we shall focus on using the Nyström method. The integral
+eigenvalue problem (3) is approximated by an M-point quadrature
+:math:`\{w_i,x_i\}_{i=1}^M`, the resulting expression is considered on
+each of the quadrature points:
+
+.. math:: \sum_{i=1}^M w_i R(t_j,s_i) \phi_k(s_i) = \lambda_k \phi(t_j),\hspace{7mm} j=0,1,2,\ldots,M.
+
+The discrete expression (4) reduces to the matrix eigenvalue problem
+
+.. math:: \mathbf{C}\bf{W}\mathbf{\phi}_k = \lambda_k \mathbf{\phi}_k
+
+where we have introduced the diagonal matrix of weights
+:math:`\mathbf{W} = \text{diag}\{w_1,\ldots,w_M\}` and the covariance
+matrix :math:`(\mathbf{C})_{ij} = R(t_i,t_j)`. Solving this eigenvalue
+problem will determine the eigenvectors and -values of the discretised
+system of (3) and allow the determination of the discrete KL
+approximation. We note as a practical consideration that (5) can be
+modified by left multiplying both sides by :math:`\mathbf{W}^{1/2}`, such
+that the system
+
+.. math:: \mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}\mathbf{y}_k = \lambda_k \mathbf{y}_k,
+
+where :math:`\mathbf{y}_k = \mathbf{W}^{1/2}\mathbf{\phi}_k`, is obtained. This
+system is advantageous as :math:`\mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}` is a
+positive semi-definite symmetric matrix and therefore has orthogonal
+eigenvectors with positive,real eigen values.

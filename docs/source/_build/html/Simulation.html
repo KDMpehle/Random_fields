@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Simulation &mdash; GaussRF 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="License.html" />
+    <link rel="prev" title="GaussRF documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GaussRF
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random_field_tutorial.html">A Python Library for simulating Gaussian random fields</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GaussRF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Simulation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Simulation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-simulation">
+<span id="simulation"></span><h1>Simulation<a class="headerlink" href="#module-simulation" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="simulation.KL_1DNys">
+<code class="sig-prename descclassname">simulation.</code><code class="sig-name descname">KL_1DNys</code><span class="sig-paren">(</span><em class="sig-param">N</em>, <em class="sig-param">M</em>, <em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">Cov</em>, <em class="sig-param">quad='EOLE'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.KL_1DNys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Karhunen-Loeve in 1-Dimension using Nystrom method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – Order of the Karhunen-Loeve expansion.</p></li>
+<li><p><strong>M</strong> (<em>int</em>) – number of quadrature intervals . <span class="math notranslate nohighlight">\(N \leq M\)</span></p></li>
+<li><p><strong>a</strong><strong>,</strong><strong>b</strong> (<em>float</em>) – domain of simulation, <span class="math notranslate nohighlight">\(X_t\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\([a,b]\)</span></p></li>
+<li><p><strong>Cov</strong> (<em>func</em>) – The covariance function, a bivariate function</p></li>
+<li><p><strong>quad</strong> (<em>str</em>) – Quadrature used.”EOLE” for the EOLE method. I tried Gauss-Legendre before and there was an issue with inaccurate simulation at the end points of the simulation domain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Order of expansion N must be less than number of quadrature points</p></li>
+<li><p><strong>TypeError</strong> – Cov must be a callable, bivariate function.</p></li>
+<li><p><strong>ValueError</strong> – Only ‘EOLE’ quadrature is supported so far</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(X\)</span> 1-D array of the random field of shape (M,)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\phi\)</span> 2-D arrray whose columns are the eigenfunctions. Shape (M,N)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(L\)</span> 1-D array of the eigenvalues of shape (M,)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.KL_2DNys">
+<code class="sig-prename descclassname">simulation.</code><code class="sig-name descname">KL_2DNys</code><span class="sig-paren">(</span><em class="sig-param">N</em>, <em class="sig-param">n</em>, <em class="sig-param">m</em>, <em class="sig-param">lims</em>, <em class="sig-param">Cov</em>, <em class="sig-param">quad='EOLE'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.KL_2DNys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver using the Nystrom method for finding the Karhunen-Loeve expansion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> (<em>int</em>) – Order of the Karhunen-Loeve expansion.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – n and m are the number of gridpoints along x and y direction respectively.</p></li>
+<li><p><strong>m</strong> (<em>[</em><em>type</em><em>]</em>) – n and m are the number of gridpoints along x and y direction respectively.</p></li>
+<li><p><strong>lims</strong> (<em>list</em>) – simulation domain is [a,b] x [c,d]</p></li>
+<li><p><strong>Cov</strong> (<em>func</em>) – The covariance function, a bivariate function</p></li>
+<li><p><strong>quad</strong> (<em>str</em><em>, </em><em>optional</em>) – The quadrature method used. EOLE will be the only implemented for now, defaults to “EOLE”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – Order of expansion N must be less than number of quadrature points</p></li>
+<li><p><strong>TypeError</strong> – Cov must be a callable, bivariate function.</p></li>
+<li><p><strong>ValueError</strong> – Only ‘EOLE’ quadrature is supported so far</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(X\)</span> array of the RF simulation</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(\phi\)</span> An array holding eigenvectors discretised KL system of (n*m, N)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(L\)</span> 1-D array of the eigenvalues of shape (n*m,)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circ_embed1D">
+<code class="sig-prename descclassname">simulation.</code><code class="sig-name descname">circ_embed1D</code><span class="sig-paren">(</span><em class="sig-param">g</em>, <em class="sig-param">a</em>, <em class="sig-param">b</em>, <em class="sig-param">Cov</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circ_embed1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Circulant embedding method in 1-Dimension</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<em>int</em>) – exponent of the sample size <span class="math notranslate nohighlight">\(N = 2^g\)</span></p></li>
+<li><p><strong>a</strong> (<em>float</em>) – left end point of domain.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – right end point of domain.</p></li>
+<li><p><strong>Cov</strong> (<em>func</em>) – A stationary covariance function of one argument.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Could not find a positive definite embedding. Consider the KL method.</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(X\)</span>: 1-D array of the random field of shape (N,)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circ_embed2D">
+<code class="sig-prename descclassname">simulation.</code><code class="sig-name descname">circ_embed2D</code><span class="sig-paren">(</span><em class="sig-param">n</em>, <em class="sig-param">m</em>, <em class="sig-param">lims</em>, <em class="sig-param">Cov</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circ_embed2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>To simulate a 2-D stationary Gaussian field with the circulant embedding method in two dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – number of grid points  in the x-direction.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – number of grid points  in the y-direction.</p></li>
+<li><p><strong>lims</strong> (<em>numpy.ndarray</em>) – A 4-d vector containing end points of rectangular domain.</p></li>
+<li><p><strong>Cov</strong> (<em>func</em>) – Covariance function of the Gaussian process, a bivariate function</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – Cov must be a bivariate function</p></li>
+<li><p><strong>ValueError</strong> – Could not find a postive definite circulant embedding: Consider the KL method.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>field1: The first field outputed, real part from the embedding method.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>field2: The second field outputed, imaginary part from the emedding method.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="License.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="GaussRF documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Khaya Mpehle, Steven Maharaj
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>A Python Library for simulating Gaussian random fields &mdash; GaussRF 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="License" href="License.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GaussRF
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Simulation.html">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">A Python Library for simulating Gaussian random fields</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introductory-theory">Introductory theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-karhunen-loeve-approximation">The Karhunen Loève approximation</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GaussRF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>A Python Library for simulating Gaussian random fields</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="a-python-library-for-simulating-gaussian-random-fields">
+<h1>A Python Library for simulating Gaussian random fields<a class="headerlink" href="#a-python-library-for-simulating-gaussian-random-fields" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Khaya Mpehle, Steven Maharaj</p>
+</dd>
+</dl>
+<p>Here we will introduce a python library, <code class="docutils literal notranslate"><span class="pre">GaussRF</span></code>, concerned with
+simulating Gaussian Random fields in one-dimension and two-dimensional
+rectangular domains. The library will implement two sampling methods,
+one approximate and one exact. The Karhunen-Loève expansion, using the
+Nyström method to solve further numerical problems, is the approximate
+method, while the circulant embedding method is the exact sampling
+procedure. The document is structured as follows: a brief discussion on
+the theory random fields will start. The main part of the document will
+then introduce the key functions in <code class="docutils literal notranslate"><span class="pre">GaussRF</span></code> and give examples of
+their use. The document will finish by listing expansions to this
+library that should be prioritized.</p>
+<div class="section" id="introductory-theory">
+<h2>Introductory theory<a class="headerlink" href="#introductory-theory" title="Permalink to this headline">¶</a></h2>
+<p>Let us denote by <span class="math notranslate nohighlight">\(T\)</span> some space, for example a two-dimensional
+rectangular domain <span class="math notranslate nohighlight">\([a,b] \times [c,d]\)</span>, the surface of a sphere
+or the time interval <span class="math notranslate nohighlight">\([t_{\text{min}},t_{\text{max}}]\)</span>. A random
+field takes each member <span class="math notranslate nohighlight">\(t \in T\)</span> of this space and assigns a
+random variable to it. A random field <span class="math notranslate nohighlight">\(F_t\)</span> therefore assigns a
+random variable to each point <span class="math notranslate nohighlight">\(t\)</span> in the index space <span class="math notranslate nohighlight">\(T\)</span>.
+If <span class="math notranslate nohighlight">\(t\)</span> is a one-dimensional index, then a random field reduces
+to a stochastic process. The variations of topography would be
+modelled by a random field <span class="math notranslate nohighlight">\(H_t\)</span> on a two-dimensional domain
+<span class="math notranslate nohighlight">\(t \in \mathds{R}^2\)</span>; Random fluctuations of the wind field
+across the Earth’s surface would be modelled be a random field with
+its index set a subset of the surface of a sphere. In general then a
+random field is an extension of a stochastic process, allowing the
+index space <span class="math notranslate nohighlight">\(T\)</span> to be a manifold. A Gaussian random field
+<span class="math notranslate nohighlight">\(X_t\)</span> is one that has a Gaussian distribution for each
+<span class="math notranslate nohighlight">\(t \in T\)</span>.</p>
+<p>It is our goal to produce a Python library for the numerical
+simulation of Gaussian random fields in one-dimensions and
+two-dimensional rectangular domains using two well established
+numerical techniques. The first is via truncation of the
+Karhunen-Loève(KL) expansion of the RF.</p>
+</div>
+<div class="section" id="the-karhunen-loeve-approximation">
+<h2>The Karhunen Loève approximation<a class="headerlink" href="#the-karhunen-loeve-approximation" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(X_t\)</span> be a zero mean Gaussian field, where <span class="math notranslate nohighlight">\(t \in T\)</span>,
+with covariance function</p>
+<div class="math notranslate nohighlight">
+\[R(t,s) = E\left[X_tX_s\right] .\]</div>
+<p>The Karhunen-Loève expansion theorem states that <span class="math notranslate nohighlight">\(X_t\)</span> can be
+expanded as</p>
+<div class="math notranslate nohighlight">
+\[X_t = \sum_{k=1}^\infty \sqrt{\lambda_k}Z_k \phi_k(t).\]</div>
+<p>In this expansion <span class="math notranslate nohighlight">\(Z_k\)</span> are iid standard normal variables while
+<span class="math notranslate nohighlight">\(\phi_k\)</span> and <span class="math notranslate nohighlight">\(\lambda_k\)</span> are respectively the
+eigen-functions and -values of the RF’s covariance function. Therefore
+<span class="math notranslate nohighlight">\(\phi_k\)</span> and <span class="math notranslate nohighlight">\(\lambda_k\)</span> satisfy the eigenvalue problem</p>
+<div class="math notranslate nohighlight">
+\[\int_{t\in T} R(t,s)\phi_k(s)ds = \lambda_k\phi_k(t)\]</div>
+<p>The Karhunen-Loève expansion can roughly be thought of as
+“separating” the deterministic and random components of the Gaussian
+RF.
+| A means of approximating the RF <span class="math notranslate nohighlight">\(X_t\)</span> is to truncate the KL
+expansion after <span class="math notranslate nohighlight">\(N\)</span> terms. This is termed the Karhunen-Loève
+approximation of order <span class="math notranslate nohighlight">\(N\)</span>. With a finite number of terms in the
+expansion, the only remaining task is to find the eigenvalues and
+-functions of the convariance function. There are several ways to do
+this, here we shall focus on using the Nyström method. The integral
+eigenvalue problem (3) is approximated by an M-point quadrature
+<span class="math notranslate nohighlight">\(\{w_i,x_i\}_{i=1}^M\)</span>, the resulting expression is considered on
+each of the quadrature points:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^M w_i R(t_j,s_i) \phi_k(s_i) = \lambda_k \phi(t_j),\hspace{7mm} j=0,1,2,\ldots,M.\]</div>
+<p>The discrete expression (4) reduces to the matrix eigenvalue problem</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{C}\bf{W}\mathbf{\phi}_k = \lambda_k \mathbf{\phi}_k\]</div>
+<p>where we have introduced the diagonal matrix of weights
+<span class="math notranslate nohighlight">\(\mathbf{W} = \text{diag}\{w_1,\ldots,w_M\}\)</span> and the covariance
+matrix <span class="math notranslate nohighlight">\((\mathbf{C})_{ij} = R(t_i,t_j)\)</span>. Solving this eigenvalue
+problem will determine the eigenvectors and -values of the discretised
+system of (3) and allow the determination of the discrete KL
+approximation. We note as a practical consideration that (5) can be
+modified by left multiplying both sides by <span class="math notranslate nohighlight">\(\mathbf{W}^{1/2}\)</span>, such
+that the system</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}\mathbf{y}_k = \lambda_k \mathbf{y}_k,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{y}_k = \mathbf{W}^{1/2}\mathbf{\phi}_k\)</span>, is obtained. This
+system is advantageous as <span class="math notranslate nohighlight">\(\mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}\)</span> is a
+positive semi-definite symmetric matrix and therefore has orthogonal
+eigenvectors with positive,real eigen values.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="License.html" class="btn btn-neutral float-left" title="License" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Khaya Mpehle, Steven Maharaj
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
