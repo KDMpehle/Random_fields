@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>A Python Library for simulating Gaussian random fields &mdash; GaussRF 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="License" href="License.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> GaussRF
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Simulation.html">Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">A Python Library for simulating Gaussian random fields</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-karhunen-loeve-approximation">The Karhunen Loève approximation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#circulant-embedding-methods">Circulant Embedding methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GaussRF</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>A Python Library for simulating Gaussian random fields</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Tutorial2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="a-python-library-for-simulating-gaussian-random-fields">
+<h1>A Python Library for simulating Gaussian random fields<a class="headerlink" href="#a-python-library-for-simulating-gaussian-random-fields" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Khaya Donald Mpehle, Steven Maharaj</p>
+</dd>
+</dl>
+<p>Here we will introduce a python library, <code class="docutils literal notranslate"><span class="pre">GaussRF</span></code>, concerned with
+simulating Gaussian Random fields in one-dimension and two-dimensional
+rectangular domains. The library will implement two sampling methods,
+one approximate and one exact. The Karhunen-Loève expansion, using the
+Nyström method to solve further numerical problems, is the approximate
+method, while the circulant embedding method is the exact sampling
+procedure. The document is structured as follows: a brief discussion on
+the theory random fields will start. The main part of the document will
+then introduce the key functions in <code class="docutils literal notranslate"><span class="pre">GaussRF</span></code> and give examples of
+their use. The document will finish by listing expansions to this
+library that should be prioritized.</p>
+<div class="section" id="the-karhunen-loeve-approximation">
+<h2>The Karhunen Loève approximation<a class="headerlink" href="#the-karhunen-loeve-approximation" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math notranslate nohighlight">\(X_t\)</span> be a zero mean Gaussian field, where <span class="math notranslate nohighlight">\(t \in T\)</span>,
+with covariance function</p>
+<div class="math notranslate nohighlight">
+\[R(t,s) = E\left[X_tX_s\right].\]</div>
+<p>The Karhunen-Loève expansion theorem states that <span class="math notranslate nohighlight">\(X_t\)</span> can be
+expanded as</p>
+<div class="math notranslate nohighlight">
+\[X_t = \sum_{k=1}^\infty \sqrt{\lambda_k}Z_k \phi_k(t).\]</div>
+<p>In this expansion <span class="math notranslate nohighlight">\(Z_k\)</span> are iid standard normal variables while
+<span class="math notranslate nohighlight">\(\phi_k\)</span> and <span class="math notranslate nohighlight">\(\lambda_k\)</span> are respectively the
+eigen-functions and -values of the RF’s covariance function. Therefore
+<span class="math notranslate nohighlight">\(\phi_k\)</span> and <span class="math notranslate nohighlight">\(\lambda_k\)</span> satisfy the eigenvalue problem</p>
+<div class="math notranslate nohighlight">
+\[\int_{t\in T} R(t,s)\phi_k(s)ds = \lambda_k\phi_k(t)\]</div>
+<p>The Karhunen-Loève expansion can roughly be thought of as
+“separating” the deterministic and random components of the Gaussian
+RF.
+A means of approximating the RF <span class="math notranslate nohighlight">\(X_t\)</span> is to truncate the KL
+expansion after <span class="math notranslate nohighlight">\(N\)</span> terms. This is termed the Karhunen-Loève
+approximation of order <span class="math notranslate nohighlight">\(N\)</span>. With a finite number of terms in the
+expansion, the only remaining task is to find the eigenvalues and
+-functions of the convariance function. There are several ways to do
+this, here we shall focus on using the Nyström method [1,4]. The integral
+eigenvalue problem (3) is approximated by an M-point quadrature
+<span class="math notranslate nohighlight">\(\{w_i,x_i\}_{i=1}^M\)</span>, the resulting expression is considered on
+each of the quadrature points:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^M w_i R(t_j,s_i) \phi_k(s_i) = \lambda_k \phi(t_j),\hspace{7mm} j=0,1,2,\ldots,M.\]</div>
+<p>The discrete expression (4) reduces to the matrix eigenvalue problem</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{C}\bf{W}\mathbf{\phi}_k = \lambda_k \mathbf{\phi}_k\]</div>
+<p>where we have introduced the diagonal matrix of weights
+<span class="math notranslate nohighlight">\(\mathbf{W} = \text{diag}\{w_1,\ldots,w_M\}\)</span> and the covariance
+matrix <span class="math notranslate nohighlight">\((\mathbf{C})_{ij} = R(t_i,t_j)\)</span>. Solving this eigenvalue
+problem will determine the eigenvectors and -values of the discretised
+system of (3) and allow the determination of the discrete KL
+approximation. We note as a practical consideration that (5) can be
+modified by left multiplying both sides by <span class="math notranslate nohighlight">\(\mathbf{W}^{1/2}\)</span>, such
+that the system</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}\mathbf{y}_k = \lambda_k \mathbf{y}_k,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{y}_k = \mathbf{W}^{1/2}\mathbf{\phi}_k\)</span>, is obtained. This
+system is advantageous as <span class="math notranslate nohighlight">\(\mathbf{W}^{1/2}\mathbf{C}\mathbf{W}^{1/2}\)</span> is a
+positive semi-definite symmetric matrix and therefore has orthogonal
+eigenvectors with positive,real eigen values.</p>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>We have produced code using python and its numpy library to compute
+the Karhunen-Loève expansion on one- and two-dimensional rectangular
+domains.There are two quadrature methods implemented so far. The first is the
+“EOLE” method in which the quadrature points <span class="math notranslate nohighlight">\(x_i\)</span> are evenly
+spaced and the weights <span class="math notranslate nohighlight">\(w_i  = |\Omega|/N\)</span> are equal. The second is the Gauss-Legendre quadrature where
+the quadrature points used are those of the Gauss-Legendre quadrature.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">KL1DNys</span></code> will return a simulation of the Gaussian
+process <span class="math notranslate nohighlight">\(X_t\)</span> when given its covariance function <span class="math notranslate nohighlight">\(R(t,s)\)</span>.
+In figure 1, the eigenvalues of the Brownian motion process along with
+the first six eigenfunctions, which have analytical solutions, are compared to our EOLE Nyström simulation. One
+can see good agreement between the exact eigenvalues and our numerical
+approximation.</p>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/BM_EV_eg.jpg"><img alt="_images/BM_EV_eg.jpg" src="_images/BM_EV_eg.jpg" style="width: 600px;" /></a>
+</div>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/BM_EFs-1.jpg"><img alt="_images/BM_EFs-1.jpg" src="_images/BM_EFs-1.jpg" style="width: 600px;" /></a>
+</div>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="_images/BM_eg-1.jpg"><img alt="_images/BM_eg-1.jpg" src="_images/BM_eg-1.jpg" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Top: Comparison of the numerical eigenvalues to the exact eigenvalues
+in the Brownian motion Karhunen-Loève function expansion.Middle:
+Comparison of the exact and numerical 5th eigenfunction. Bottom: The
+approximate Brownian motion in an <span class="math notranslate nohighlight">\(N=200\)</span> term expansion. Here
+N=200 quadrature points were used.|Top: Comparison of the numerical
+eigenvalues to the exact eigenvalues in the Brownian motion
+Karhunen-Loève function expansion.Middle: Comparison of the first six numerical eigenfunctions with their exact solutions . Bottom: The approximate Brownian motion in
+an <span class="math notranslate nohighlight">\(N=200\)</span> term expansion. Here N=200 quadrature points were
+used.|Top: Comparison of the numerical eigenvalues to the exact
+eigenvalues in the Brownian motion Karhunen-Loève function
+expansion.Middle: Comparison of the exact and numerical 5th
+eigenfunction. Bottom: The approximate Brownian motion in an
+<span class="math notranslate nohighlight">\(N=200\)</span> term expansion. Here N=200 quadrature points were used.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">KL2DNys</span></code> will return a simulation of the Gaussian field
+<span class="math notranslate nohighlight">\(X_t\)</span>, <span class="math notranslate nohighlight">\(t\in \mathbb{R^2}\)</span> with supplied covariance
+function, on a rectangular domain. As an example, consider the Gaussian
+RF with the stationary, isotropic exponential covariance given by</p>
+<div class="math notranslate nohighlight">
+\[R(s,t) = \exp\left( - \frac{|s - t ||}{\rho} \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho\)</span> is some scale radius. In figure 2, we see a plot of
+the eigenvalues of this covariance matrix along with the first 5
+eigenfunctions, simulated on the domain <span class="math notranslate nohighlight">\([0,1] \times [0,1]\)</span> with
+<span class="math notranslate nohighlight">\(50 \times 50\)</span> points. Note that this is a small number of
+simulation points to be using, but this is all that the the relatively
+weak computer’s RAM allows to be used. This is a limitation of our current
+resources, and a full convergence test with finer discretisations, on a more
+powerful computer, is called for.</p>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/exponential_2D_eigenvalues-1.jpg"><img alt="_images/exponential_2D_eigenvalues-1.jpg" src="_images/exponential_2D_eigenvalues-1.jpg" style="width: 600px;" /></a>
+</div>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/_exponential_eigenfunctions-1.jpg"><img alt="_images/_exponential_eigenfunctions-1.jpg" src="_images/_exponential_eigenfunctions-1.jpg" style="width: 600px;" /></a>
+</div>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="_images/exponential_RF_test.png"><img alt="_images/exponential_RF_test.png" src="_images/exponential_RF_test.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Top: Eigenvalues of the 2D exponential covariance function Gaussian RF.
+Middle: The first 6 eigenfunctions. Bottom: The random field
+realisation. There are
+<span class="math notranslate nohighlight">\(50 \times 50\)</span> points and the order of the expansion is
+<span class="math notranslate nohighlight">\(N = 100\)</span>.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="circulant-embedding-methods">
+<h2>Circulant Embedding methods<a class="headerlink" href="#circulant-embedding-methods" title="Permalink to this headline">¶</a></h2>
+<p>Suppose <span class="math notranslate nohighlight">\(X_t\)</span> is a stationary Gaussian random field so that its
+covariance function is of the form <span class="math notranslate nohighlight">\(R(s,t) = R(s-t)\)</span>. In such a
+case, it may be preferable to use the <em>Circulant Embedding Method</em>. The
+method is so-called because it exploits the fact that the covariance
+matrix of stationary SPs can be embedded into a larger circulant matrix.
+Then one can use the Fast Fourier Transform to compute the eigenvalues
+of the circulant matrix, and from there go on to simulate the RF. The
+details of the method are described in [2,3]. What is desirable about the Circulant Embedding
+algorithm is its generation of a sample that has the exact covariance
+structure, and its speed. The function <code class="docutils literal notranslate"><span class="pre">circembed1D.py</span></code> will return an
+array containing the simulated Gaussian process when given a power of
+two <code class="docutils literal notranslate"><span class="pre">g</span></code>, the end points <code class="docutils literal notranslate"><span class="pre">a,</span> <span class="pre">b</span></code> of the domain and the covariance
+function. The sample size will be <span class="math notranslate nohighlight">\(N = 2^g\)</span>, as the Circulant
+Embedding method requires the sample size to be a power of two to be
+efficient. In figure 3 we plot a realisation of the SP with the
+exponential covariance function</p>
+<div class="math notranslate nohighlight">
+\[R(s,t) = R(s-t) = \exp\left(\frac{|s-t|}{l}\right).\]</div>
+<p>A similar function <code class="docutils literal notranslate"><span class="pre">circembed2D.py</span></code> implements the method in
+two-dimensions. The method will produce a Gaussian Random field. As an
+example, we take an example given in Newsam and Dietrich, the Gaussian
+RF with the covariance</p>
+<div class="math notranslate nohighlight">
+\[R(s,t) = \exp \left( (s-t)^T A (s-t)\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(A\)</span> is the positive-definite, symmetric matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A =\left( \begin{array}{cc} 3 &amp; 1 \\ 1 &amp; 2 \end{array} \right).\end{split}\]</div>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/circ_embed1D_exp-1.jpg"><img alt="_images/circ_embed1D_exp-1.jpg" src="_images/circ_embed1D_exp-1.jpg" style="width: 600px;" /></a>
+</div>
+<div class="figure align-default" id="id3">
+<a class="reference internal image-reference" href="_images/circ_embed2D_aniso-1.jpg"><img alt="_images/circ_embed2D_aniso-1.jpg" src="_images/circ_embed2D_aniso-1.jpg" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">Top: A Realisation of the 1-D exponential random process.Bottom: A
+realisation of the 2D homogeneous Gaussian RF with anisotropic
+covariance (9).</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<div class="section" id="bibliography">
+<h3>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">¶</a></h3>
+<p>[1] Betz, W., Papaioannou, I., &amp; Straub, D.(2014). Numerical methods for the discretization of random fields by means of the Karhunen-loève expansion. <em>Computer Methods in Applied Mechanics and Engineering,271,</em> 109-129.</p>
+<p>[2] Dietrich, C. R., &amp; Newsam, G. N. (1993). A fast and exact method for multidimensional Gaussian stochastic simulations. <em>Water Resources Research, 29(8),</em> 2861-2869.</p>
+<p>[3] Chan, G., &amp; Wood, A. T. (1999). Simulation of stationary Gaussian vector fields. <em>Statistics and computing, 9(4),</em> 265-268.</p>
+<p>[4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. <em>SIAM Journal on Numerical Analysis, 4(3),</em> 337-348.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="License.html" class="btn btn-neutral float-left" title="License" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Khaya Mpehle, Steven Maharaj
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -27,7 +27,7 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
     :param Cov: The covariance function, a bivariate function
     :type Cov: func
 
-    :param quad: Quadrature used."EOLE" for the EOLE method. I tried Gauss-Legendre before and there was an issue with inaccurate simulation at the end points of the simulation domain
+    :param quad: Quadrature used."EOLE" for the EOLE method. and "gaussleg" to use gauss-legendre quadrature.
     :type quad: str
 
     :raises ValueError: Order of expansion N must be less than number of quadrature points
@@ -72,11 +72,11 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     :param N: Order of the Karhunen-Loeve expansion.
     :type N: int
 
-    :param n: n and m are the number of gridpoints along x and y direction respectively. 
+    :param n: n is the number of gridpoints along x direction respectively. 
     :type n: int
 
-    :param m: n and m are the number of gridpoints along x and y direction respectively. 
-    :type m: [type]
+    :param m: m is the number of gridpoints along y direction respectively. 
+    :type m: int
 
     :param lims: simulation domain is [a,b] x [c,d]
     :type lims: list
@@ -91,7 +91,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     :raises TypeError: Cov must be a callable, bivariate function.
     :raises ValueError: Only 'EOLE' quadrature is supported so far
     
-    :return: :math:`X` array of the RF simulation
+    :return: :math:`X` array of shape (n,m), the RF simulation
     :rtype: numpy.ndarray
 
     :return: :math:`\phi` An array holding eigenvectors discretised KL system of (n*m, N)

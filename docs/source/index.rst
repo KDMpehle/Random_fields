@@ -12,7 +12,7 @@ GaussRF documentation
 
    Simulation
    License
-   Tutorial
+   Tutorial2
 
 
 

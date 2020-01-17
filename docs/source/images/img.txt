@@ -1,0 +1,13 @@
+20191216_111207.jpg
+BM_EFs-1.jpg
+BM_EV_eg.jpg
+BM_EV_eg.pdf
+BM_EV_eg.zip
+BM_eg-1.jpg
+BM_eg.zip
+_exponential_eigenfunctions-1.jpg
+circ_embed1D_exp-1.jpg
+circ_embed2D_aniso-1.jpg
+exponential_2D_eigenvalues-1.jpg
+exponential_RF_test.png
+img.txt

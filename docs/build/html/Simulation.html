@@ -85,7 +85,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="License.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">A Python Library for simulating Gaussian random fields</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial2.html">A Python Library for simulating Gaussian random fields</a></li>
 </ul>
 
             
@@ -163,7 +163,7 @@
 <li><p><strong>M</strong> (<em>int</em>) – number of quadrature intervals . <span class="math notranslate nohighlight">\(N \leq M\)</span></p></li>
 <li><p><strong>a</strong><strong>,</strong><strong>b</strong> (<em>float</em>) – domain of simulation, <span class="math notranslate nohighlight">\(X_t\)</span> for <span class="math notranslate nohighlight">\(t\)</span> in <span class="math notranslate nohighlight">\([a,b]\)</span></p></li>
 <li><p><strong>Cov</strong> (<em>func</em>) – The covariance function, a bivariate function</p></li>
-<li><p><strong>quad</strong> (<em>str</em>) – Quadrature used.”EOLE” for the EOLE method. I tried Gauss-Legendre before and there was an issue with inaccurate simulation at the end points of the simulation domain</p></li>
+<li><p><strong>quad</strong> (<em>str</em>) – Quadrature used.”EOLE” for the EOLE method. and “gaussleg” to use gauss-legendre quadrature.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -202,8 +202,8 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>N</strong> (<em>int</em>) – Order of the Karhunen-Loeve expansion.</p></li>
-<li><p><strong>n</strong> (<em>int</em>) – n and m are the number of gridpoints along x and y direction respectively.</p></li>
-<li><p><strong>m</strong> (<em>[</em><em>type</em><em>]</em>) – n and m are the number of gridpoints along x and y direction respectively.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – n is the number of gridpoints along x direction respectively.</p></li>
+<li><p><strong>m</strong> (<em>int</em>) – m is the number of gridpoints along y direction respectively.</p></li>
 <li><p><strong>lims</strong> (<em>list</em>) – simulation domain is [a,b] x [c,d]</p></li>
 <li><p><strong>Cov</strong> (<em>func</em>) – The covariance function, a bivariate function</p></li>
 <li><p><strong>quad</strong> (<em>str</em><em>, </em><em>optional</em>) – The quadrature method used. EOLE will be the only implemented for now, defaults to “EOLE”</p></li>
@@ -217,7 +217,7 @@
 </ul>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><span class="math notranslate nohighlight">\(X\)</span> array of the RF simulation</p>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\(X\)</span> array of shape (n,m), the RF simulation</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>numpy.ndarray</p>
