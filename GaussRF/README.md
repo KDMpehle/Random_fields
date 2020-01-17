@@ -1,4 +1,4 @@
-aussRF
+GaussRF
 --------
  A python package for numerical simulation of Gaussian random fields.
 
