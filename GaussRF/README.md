@@ -1,4 +1,4 @@
-aussRF
+GaussRF
 --------
  A python package for numerical simulation of Gaussian random fields.
 
@@ -13,4 +13,4 @@ GaussRF contains implementations for the numerical simulation of Gaussian Random
 
 [3] Chan, G., & Wood, A. T. (1999). Simulation of stationary Gaussian vector fields. *Statistics and computing, 9(4),* 265-268.
 
-[4]INCOMPLETE REFERENCES LIST
+[4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. * Siam Journal on Numerical Analysis, 4(3),* 337-348.
