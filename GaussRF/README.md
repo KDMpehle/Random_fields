@@ -4,7 +4,7 @@ GaussRF
 
 Overview
 ------
-GaussRF contains implementations for the numerical simulation of Gaussian Random fields(RFs). There are already a few Python packages that implement algorithms for simulating Gaussian RFs. However, to the authors' knolwedge there doesn't seem to be (an easily found) Python package that contains both exact and approximate methods. So far GaussRF implements one exact (The Circulant Embedding method) and one approximate (Karhunen-Loeve truncation) method. More convincingly, one of the authors has a particular interest in oceanography, and studies the numerical simulation of random fields cognizant of their applications to oceanographic contexts.
+GaussRF contains implementations for the numerical simulation of Gaussian Random fields(RFs). There are already a few Python packages that implement algorithms for simulating Gaussian RFs. However, to the authors' knowledge there doesn't seem to be (an easily found) Python package that contains both exact and approximate methods. So far GaussRF implements one exact (The Circulant Embedding method) and one approximate (Karhunen-Loeve truncation) method. More convincingly, one of the authors has a particular interest in oceanography, and studies the numerical simulation of random fields cognizant of their applications to oceanographic contexts.
 
 ### Bibliography
 [1] Betz, W., Papaioannou, I., & Straub, D.(2014). Numerical methods for the discretization of random fields by means of the Karhunen-loève expansion. *Computer Methods in Applied Mechanics and Engineering,271,* 109-129.
