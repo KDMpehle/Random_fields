@@ -13,4 +13,6 @@ GaussRF contains implementations for the numerical simulation of Gaussian Random
 
 [3] Chan, G., & Wood, A. T. (1999). Simulation of stationary Gaussian vector fields. *Statistics and computing, 9(4),* 265-268.
 
-[4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. * Siam Journal on Numerical Analysis, 4(3),* 337-348.
+[4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. *Siam Journal on Numerical Analysis, 4(3),* 337-348.
+
+[5] Phoon, K. K., Huang, S. P., & Quek, S. T. (2002). Implementation of Karhunen-Loeve expansion for simulation using a wavelet-Galerkin scheme. *Probabilistic Engineering Mechanics, 17(3),* 293-303.
