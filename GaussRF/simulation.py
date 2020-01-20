@@ -3,23 +3,37 @@ import scipy.sparse.linalg as spla
 import numbers
 
 def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
-    """
-    Karhunen-Loeve in 1-Dimension using Nystrom method.
-    -----
-    input
-    -----
-    N: Order of the Karhunen-Loeve expansion.
-    M: number of quadrature intervals . N <=M
-    a,b: domain of simulation, X_t for t in [a,b]
-    Cov: The covariance function, a bivariate function
-    quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use
-    gauss-legendre quadrature.
-    -----
-    output
-    -----
-    X: (M,) 1-D array of the random field
-    phi: (M,N) 2-D arrray whose columns are the eigenfunctions
-    L: (M,) 1-D array of the eigenvalues.
+    """Karhunen-Loeve in 1-Dimension using Nystrom method.
+
+
+    :param N: Order of the Karhunen-Loeve expansion.
+    :type N: int
+
+    :param M: number of quadrature intervals . :math:`N \leq M`
+    :type M: int
+
+    :param a,b: domain of simulation, :math:`X_t` for :math:`t` in :math:`[a,b]`
+    :type a,b: float
+
+    :param Cov: The covariance function, a bivariate function
+    :type Cov: func
+
+    :param quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use gauss-legendre quadrature.
+    :type quad: str, optional
+
+    :raises ValueError: Order of expansion N must be less than number of quadrature points.
+    :raises TypeError: Cov must be a callable, bivariate function.
+    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
+
+    :return: :math:`X` 1-D array of the random field of shape (M,)
+    :rtype: numpy.ndarray
+
+    :return: :math:`\phi` 2-D arrray whose columns are the eigenfunctions. Shape (M,N) 
+    :rtype: numpy.ndarray
+
+    :return: :math:`L` 1-D array of the eigenvalues of shape (M,)
+    :rtype: numpy.ndarray
+
     """
     if N > M:
         raise ValueError(' Order of expansion N must be less than number of quadrature points')
@@ -58,27 +72,42 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
         return X, phi, L, x # return the GL grid as well
         
     else:
-        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature is supported so far")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far.")
 
 def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
-    """
-    Solver using the Nystrom method for finding the Karhunen-Loeve expansion
-    -----
-    input
-    -----
-    N: The order of the Karhunen-Loeve expansion.
-    n,m: n and m are the number of gridpoints along x and y direction respectively. 
-    lims: lims=[a,b,c,d] simulation domain is [a,b] x [c,d]
-    Cov: the covariance function should. Should be given as c(x,y), x and y bivariate vectors.
-    quad: The quadrature method used. "EOLE" for the EOLE method quadrature
-    and "gaussleg" for the gauss-legendre quadrature
-    -----
-    output
-    -----
-    X: (n,m) array of the RF simulation
-    phi: (n*m, N) array holding eigenvectors discretised KL system
-    L: (n*m,) array holding the eigenvalues
-    """
+    """Solver using the Nystrom method for finding the Karhunen-Loeve expansion
+    
+    :param N: Order of the Karhunen-Loeve expansion.
+    :type N: int
+
+    :param n: n is the number of gridpoints along x direction respectively. 
+    :type n: int
+
+    :param m: m is the number of gridpoints along y direction respectively. 
+    :type m: int
+
+    :param lims: simulation domain is [a,b] x [c,d]
+    :type lims: list
+
+    :param Cov: The covariance function, a bivariate function
+    :type Cov: func
+
+    :param quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use gauss-legendre quadrature.
+    :type quad: str, optional
+
+    :raises ValueError: Order of expansion N must be less than number of quadrature points.
+    :raises TypeError: Cov must be a callable, bivariate function.
+    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
+    
+    :return: :math:`X` array of shape (n,m), the RF simulation
+    :rtype: numpy.ndarray
+
+    :return: :math:`\phi` An array holding eigenvectors discretised KL system of (n*m, N)
+    :rtype: numpy.ndarray
+    
+    :return: :math:`L` 1-D array of the eigenvalues of shape (n*m,)
+    :rtype: numpy.ndarray
+    """ 
     if N > n*m:
         raise ValueError("Order of expansion must be less than the number of quadrature points.")
     if not callable(Cov):
@@ -133,21 +162,27 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
             X+= np.sqrt(L[i])*Z[i]*phi[:,i].reshape(n,m) # the KL expansion
         return X, phi, L, x1, x2 # return gauss legendre grid.
     else:
-        raise ValueError("Only 'EOLE' quadrature is supported so far.")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far.")
 def circ_embed1D(g,a,b,Cov):
-    """
-    The Circulant embedding method in 1-Dimension
-    -----
-    input
-    -----
-    g: exponent of the sample size N = 2^g
-    a,b: terminals of domain.
-    Cov: a stationary covariance function of one argument.
-    -----
-    output
-    -----
-    X: (N,) 1-D array of the random field
-    """
+    """The Circulant embedding method in 1-Dimension
+    
+    :param g: exponent of the sample size :math:`N = 2^g`
+    :type g: int
+    
+    :param a: left end point of domain.
+    :type a: float
+    
+    :param b: right end point of domain.
+    :type b: float
+    
+    :param Cov: A stationary covariance function of one argument.
+    :type Cov: func
+
+    :raises ValueError: Could not find a positive definite embedding. Consider the KL method.
+    
+    :return: :math:`X`: 1-D array of the random field of shape (N,)
+    :rtype: numpy.ndarray
+    """    
     N = 2**g # sample size
     mesh = (b-a)/N # mesh size.
     x = np.arange(0,N)*mesh # domain grid
@@ -172,22 +207,29 @@ def circ_embed1D(g,a,b,Cov):
     w = np.fft.fft(W)
     return w[0:N].real # return first half of the vector.
 def circ_embed2D(n,m,lims,Cov):
-    """
-    To simulate a 2-D stationary Gaussian field with the circulant embedding
-    method in two dimensions.
-    -----
-    input
-    -----
-    n: number of grid points  in the x-direction.
-    m: number of grid points in the y-direction.
-    lims: a 4-d vector containing end points of rectangular domain.
-    R: Covariance function of the Gaussian process, a bivariate function.
-    -----
-    output
-    -----
-    field1: The first field outputed, real part from the embedding method.
-    field2: The second field outputed, imaginary part from the emedding method.
-    """
+    """To simulate a 2-D stationary Gaussian field with the circulant embedding method in two dimensions.
+    
+    :param n: number of grid points  in the x-direction.
+    :type n: int
+
+    :param m: number of grid points  in the y-direction.
+    :type m: int
+
+    :param lims: A 4-d vector containing end points of rectangular domain.
+    :type lims: numpy.ndarray
+
+    :param Cov: Covariance function of the Gaussian process, a bivariate function
+    :type Cov: func
+
+    :raises TypeError: Cov must be a bivariate function
+    :raises ValueError: Could not find a postive definite circulant embedding: Consider the KL method.
+
+    :return: field1: The first field outputed, real part from the embedding method.
+    :rtype: numpy.ndarray
+
+    :return: field2: The second field outputed, imaginary part from the emedding method.
+    :rtype: numpy.ndarray
+    """ 
     if not callable(Cov):
         raise TypeError("Cov must be a bivariate function")
     a,b,c,d = lims # extract interval terminals from lims variable.
