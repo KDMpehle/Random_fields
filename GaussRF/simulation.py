@@ -105,6 +105,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     :type quad: str, optional
 
     :raises ValueError: Order of expansion N must be less than number of quadrature points
+
     :raises TypeError: Cov must be a callable, bivariate function.
     :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
     
@@ -172,6 +173,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
         return X, phi, L, x1, x2 # return gauss legendre grid.
     else:
         raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far")
+
 def circ_embed1D(g,a,b,Cov):
     """The Circulant embedding method in 1-Dimension
     
@@ -192,7 +194,6 @@ def circ_embed1D(g,a,b,Cov):
     :return: :math:`X`: 1-D array of the random field of shape (N,)
     :rtype: numpy.ndarray
     """    
-
     N = 2**g # sample size
     mesh = (b-a)/N # mesh size.
     x = np.arange(0,N)*mesh # domain grid
@@ -240,9 +241,6 @@ def circ_embed2D(n,m,lims,Cov):
     :return: field2: The second field outputed, imaginary part from the emedding method.
     :rtype: numpy.ndarray
     """    
-
-
-    
     if not callable(Cov):
         raise TypeError("Cov must be a bivariate function")
     a,b,c,d = lims # extract interval terminals from lims variable.
@@ -267,6 +265,7 @@ def circ_embed2D(n,m,lims,Cov):
          + 1j*np.random.randn(2*m-1,2*n-1)) # N(0,1) grid
     W = np.fft.fft2(np.sqrt(L)*Z) # simulates N(0,C)
     return W[:m,:n].real, W[:m,:n].imag 
+#
 # Execution guard
 #
 if __name__ == "__main__":
