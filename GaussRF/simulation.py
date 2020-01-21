@@ -2,6 +2,15 @@ import numpy as np
 import scipy.sparse.linalg as spla
 import numbers
 
+# def test(a):
+# """[summary]
+
+# :param a: [description]
+# :type a: [type]
+# """       
+
+
+
 def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
     """Karhunen-Loeve in 1-Dimension using Nystrom method.
 
@@ -19,11 +28,11 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
     :type Cov: func
 
     :param quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use gauss-legendre quadrature.
-    :type quad: str, optional
+    :type quad: str
 
-    :raises ValueError: Order of expansion N must be less than number of quadrature points.
+    :raises ValueError: Order of expansion N must be less than number of quadrature points
     :raises TypeError: Cov must be a callable, bivariate function.
-    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
+    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature is supported so far
 
     :return: :math:`X` 1-D array of the random field of shape (M,)
     :rtype: numpy.ndarray
@@ -67,12 +76,12 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
         X = np.zeros(M) #preallocate realisation vector.
         W_inv = np.sqrt(2./(b-a))*np.diag(1/np.sqrt(w)) # weights inv sqrt
         phi = np.dot(W_inv,y) # original eigenvector problem.
-        Z = np.random.randn(N):
+        Z = np.random.randn(N)
+        for i in range(N):
             X += Z[i]*np.sqrt(L[i])*phi[:,i] # The KL expansion.
-        return X, phi, L, x # return the GL grid as well
-        
+        return X, phi, L, x # return the GL grid as well 
     else:
-        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far.")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far")
 
 def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     """Solver using the Nystrom method for finding the Karhunen-Loeve expansion
@@ -92,10 +101,11 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     :param Cov: The covariance function, a bivariate function
     :type Cov: func
 
-    :param quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use gauss-legendre quadrature.
+    :param quad: The quadrature method used. "EOLE" for the EOLE method and "gaussleg" for Gauss-Legendre.
     :type quad: str, optional
 
-    :raises ValueError: Order of expansion N must be less than number of quadrature points.
+    :raises ValueError: Order of expansion N must be less than number of quadrature points
+
     :raises TypeError: Cov must be a callable, bivariate function.
     :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
     
@@ -107,7 +117,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     
     :return: :math:`L` 1-D array of the eigenvalues of shape (n*m,)
     :rtype: numpy.ndarray
-    """ 
+    """    
     if N > n*m:
         raise ValueError("Order of expansion must be less than the number of quadrature points.")
     if not callable(Cov):
@@ -162,7 +172,8 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
             X+= np.sqrt(L[i])*Z[i]*phi[:,i].reshape(n,m) # the KL expansion
         return X, phi, L, x1, x2 # return gauss legendre grid.
     else:
-        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far.")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far")
+
 def circ_embed1D(g,a,b,Cov):
     """The Circulant embedding method in 1-Dimension
     
@@ -229,7 +240,7 @@ def circ_embed2D(n,m,lims,Cov):
 
     :return: field2: The second field outputed, imaginary part from the emedding method.
     :rtype: numpy.ndarray
-    """ 
+    """    
     if not callable(Cov):
         raise TypeError("Cov must be a bivariate function")
     a,b,c,d = lims # extract interval terminals from lims variable.
