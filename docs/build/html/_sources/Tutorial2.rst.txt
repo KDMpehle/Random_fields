@@ -1,5 +1,5 @@
 ======================================================
-A Python Library for simulating Gaussian random fields
+Tutorial
 ======================================================
 
 :Author: Khaya Donald Mpehle, Steven Maharaj
@@ -107,16 +107,7 @@ approximation.
    in the Brownian motion Karhunen-Loève function expansion.Middle:
    Comparison of the exact and numerical 5th eigenfunction. Bottom: The
    approximate Brownian motion in an :math:`N=200` term expansion. Here
-   N=200 quadrature points were used.|Top: Comparison of the numerical
-   eigenvalues to the exact eigenvalues in the Brownian motion
-   Karhunen-Loève function expansion.Middle: Comparison of the first six numerical eigenfunctions with their exact solutions . Bottom: The approximate Brownian motion in
-   an :math:`N=200` term expansion. Here N=200 quadrature points were
-   used.|Top: Comparison of the numerical eigenvalues to the exact
-   eigenvalues in the Brownian motion Karhunen-Loève function
-   expansion.Middle: Comparison of the exact and numerical 5th
-   eigenfunction. Bottom: The approximate Brownian motion in an
-   :math:`N=200` term expansion. Here N=200 quadrature points were used.
-
+   N=200 quadrature points were used.
 
 The function ``KL2DNys`` will return a simulation of the Gaussian field
 :math:`X_t`, :math:`t\in \mathbb{R^2}` with supplied covariance
@@ -221,11 +212,3 @@ Bibliography
 
 [5]  Phoon, K. K., Huang, S. P., & Quek, S. T. (2002). Implementation of Karhunen-Loeve expansion for simulation using a wavelet-Galerkin scheme. Probabilistic Engineering Mechanics, 17(3), 293-303.
 
-.. |Top: Comparison of the numerical eigenvalues to the exact eigenvalues in the Brownian motion Karhunen-Loève function expansion.Middle: Comparison of the exact and numerical 5th eigenfunction. Bottom: The approximate Brownian motion in an :math:`N=200` term expansion. Here N=200 quadrature points were used.image:: BM_EV_eg.pdf
-.. |Top: Comparison of the numerical eigenvalues to the exact eigenvalues in the Brownian motion Karhunen-Loève function expansion.Middle: Comparison of the exact and numerical 5th eigenfunction. Bottom: The approximate Brownian motion in an :math:`N=200` term expansion. Here N=200 quadrature points were used.image:: BM_EF_eg.pdf
-.. |Top: Comparison of the numerical eigenvalues to the exact eigenvalues in the Brownian motion Karhunen-Loève function expansion.Middle: Comparison of the exact and numerical 5th eigenfunction. Bottom: The approximate Brownian motion in an :math:`N=200` term expansion. Here N=200 quadrature points were used.image:: BM_eg.pdf
-.. |Top: Eigenvalues of the 2D exponential covariance function Gaussian RF. Middle: The first 6 eigenfunctions. Bottom: The random field realisation, using interpolated eigenfunctions. There are :math:`50 \times 50` points and the order of the expansion is :math:`N = 100`.image:: exponential_2D_eigenvalues.pdf
-.. |Top: Eigenvalues of the 2D exponential covariance function Gaussian RF. Middle: The first 6 eigenfunctions. Bottom: The random field realisation, using interpolated eigenfunctions. There are :math:`50 \times 50` points and the order of the expansion is :math:`N = 100`.image:: exponential_eigenfunctions.pdf
-.. |Top: Eigenvalues of the 2D exponential covariance function Gaussian RF. Middle: The first 6 eigenfunctions. Bottom: The random field realisation, using interpolated eigenfunctions. There are :math:`50 \times 50` points and the order of the expansion is :math:`N = 100`.image:: exponential_RF_test_interp
-.. |Top: A Realisation of the 1-D exponential random process.Bottom: A realisation of the 2D homogeneous Gaussian RF with anisotropic covariance (9).image:: circ_embed1D_exp.pdf
-.. |Top: A Realisation of the 1-D exponential random process.Bottom: A realisation of the 2D homogeneous Gaussian RF with anisotropic covariance (9).image:: circ_embed2d_aniso.pdf

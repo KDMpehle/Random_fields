@@ -27,7 +27,7 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
     :param Cov: The covariance function, a bivariate function
     :type Cov: func
 
-    :param quad: Quadrature used."EOLE" for the EOLE method. and "gaussleg" to use gauss-legendre quadrature.
+    :param quad: Quadrature used."EOLE" for the EOLE method and "gaussleg" to use gauss-legendre quadrature.
     :type quad: str
 
     :raises ValueError: Order of expansion N must be less than number of quadrature points
@@ -81,7 +81,7 @@ def KL_1DNys(N,M,a,b,Cov,quad = "EOLE"):
             X += Z[i]*np.sqrt(L[i])*phi[:,i] # The KL expansion.
         return X, phi, L, x # return the GL grid as well 
     else:
-        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature is supported so far")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far")
 
 def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     """Solver using the Nystrom method for finding the Karhunen-Loeve expansion
@@ -101,12 +101,12 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
     :param Cov: The covariance function, a bivariate function
     :type Cov: func
 
-    :param quad: The quadrature method used. EOLE will be the only implemented for now, defaults to "EOLE"
+    :param quad: The quadrature method used. "EOLE" for the EOLE method and "gaussleg" for Gauss-Legendre.
     :type quad: str, optional
 
     :raises ValueError: Order of expansion N must be less than number of quadrature points
     :raises TypeError: Cov must be a callable, bivariate function.
-    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature is supported so far.
+    :raises ValueError: Only 'EOLE' and 'gaussleg' quadrature are supported so far.
     
     :return: :math:`X` array of shape (n,m), the RF simulation
     :rtype: numpy.ndarray
@@ -171,7 +171,7 @@ def KL_2DNys(N,n,m,lims,Cov,quad = "EOLE"):
             X+= np.sqrt(L[i])*Z[i]*phi[:,i].reshape(n,m) # the KL expansion
         return X, phi, L, x1, x2 # return gauss legendre grid.
     else:
-        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature is supported so far")
+        raise ValueError("Only 'EOLE' and 'gaussleg' quadrature are supported so far")
 def circ_embed1D(g,a,b,Cov):
     """The Circulant embedding method in 1-Dimension
     
@@ -242,22 +242,7 @@ def circ_embed2D(n,m,lims,Cov):
     """    
 
 
-    """
-    To simulate a 2-D stationary Gaussian field with the circulant embedding
-    method in two dimensions.
-    -----
-    input
-    -----
-    n: number of grid points  in the x-direction.
-    m: number of grid points in the y-direction.
-    lims: a 4-d vector containing end points of rectangular domain.
-    R: Covariance function of the Gaussian process, a bivariate function.
-    -----
-    output
-    -----
-    field1: The first field outputed, real part from the embedding method.
-    field2: The second field outputed, imaginary part from the emedding method.
-    """
+    
     if not callable(Cov):
         raise TypeError("Cov must be a bivariate function")
     a,b,c,d = lims # extract interval terminals from lims variable.
