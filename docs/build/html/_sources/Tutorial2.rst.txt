@@ -152,6 +152,8 @@ powerful computer, is called for.
 Circulant Embedding methods
 ===========================
 
+
+
 Suppose :math:`X_t` is a stationary Gaussian random field so that its
 covariance function is of the form :math:`R(s,t) = R(s-t)`. In such a
 case, it may be preferable to use the *Circulant Embedding Method*. The
@@ -194,6 +196,18 @@ where :math:`A` is the positive-definite, symmetric matrix
 
 
 
+Extensions
+===========================
+We list here extensions to the library of functions that should be prioritised. In no particular order
+we should add functions to:
+
+* Implement the Cholesky decomposition simulation procedure in one- and two-dimensions
+
+* Implement Galerkin projection methods in one- and two-dimensions[1].
+    
+    * In particular, we should implement Haar-wavelet basis functions[5] due to the potential of a speed boost compared to other finite-element basis functions.
+
+* Add features for spatial statistics
 
 Bibliography
 ------------------
@@ -204,6 +218,8 @@ Bibliography
 [3] Chan, G., & Wood, A. T. (1999). Simulation of stationary Gaussian vector fields. *Statistics and computing, 9(4),* 265-268.
 
 [4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. *SIAM Journal on Numerical Analysis, 4(3),* 337-348.
+
+[5]  Phoon, K. K., Huang, S. P., & Quek, S. T. (2002). Implementation of Karhunen-Loeve expansion for simulation using a wavelet-Galerkin scheme. Probabilistic Engineering Mechanics, 17(3), 293-303.
 
 .. |Top: Comparison of the numerical eigenvalues to the exact eigenvalues in the Brownian motion Karhunen-Loève function expansion.Middle: Comparison of the exact and numerical 5th eigenfunction. Bottom: The approximate Brownian motion in an :math:`N=200` term expansion. Here N=200 quadrature points were used.image:: BM_EV_eg.pdf
 .. |Top: Comparison of the numerical eigenvalues to the exact eigenvalues in the Brownian motion Karhunen-Loève function expansion.Middle: Comparison of the exact and numerical 5th eigenfunction. Bottom: The approximate Brownian motion in an :math:`N=200` term expansion. Here N=200 quadrature points were used.image:: BM_EF_eg.pdf
