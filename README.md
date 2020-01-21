@@ -31,7 +31,7 @@ Bibliography
 
 [4] Atkinson, K. E. (1967). The numerical solution of Fredholm integral equations of the second kind. *SIAM Journal on Numerical Analysis, 4(3),* 337-348.
 
-[5]  Phoon, K. K., Huang, S. P., & Quek, S. T. (2002). Implementation of Karhunen-Loeve expansion for simulation using a wavelet-Galerkin scheme. Probabilistic Engineering Mechanics, 17(3), 293-303.
-=======
-This is a prototype repository for a package for simulating Gaussian Random fields in one- and two-dimensions. Methods of simulation include (i) approximate simulations using the Karhunen-Loeve expansion and (ii) exact, fast simulations using the Circulant Embedding method. 
+[5] Phoon, K. K., Huang, S. P., & Quek, S. T. (2002). Implementation of Karhunen-Loeve expansion for simulation using a wavelet-Galerkin scheme. Probabilistic Engineering Mechanics, 17(3), 293-303.
+
+ 
 
