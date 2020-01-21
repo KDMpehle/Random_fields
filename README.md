@@ -1,5 +1,5 @@
 
-# Guassian Random Fields 
+# Gaussian Random Fields 
 
 *A python package for numerical simulation of Gaussian random fields.*
 
