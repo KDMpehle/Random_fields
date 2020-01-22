@@ -9,7 +9,7 @@ GaussRF contains implementations for the numerical simulation of Gaussian Random
 _________________________
 
 ## Docs 
-The Documentation for the GaussRF package can be found [here](https://readthedocs.org/).
+The Documentation for the GaussRF package can be found [here](https://random-fields.readthedocs.io/en/latest/index.html).
 
 ______________________
 
